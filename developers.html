@@ -315,11 +315,42 @@
   .foot-switch a:hover{border-bottom-color:var(--copper-soft)}
   .legal{margin-top:26px;font-size:12.5px;color:#87A08F;max-width:840px;line-height:1.65}
 
+  /* ---------- полировка: глубина, градиенты, микровзаимодействия ---------- */
+  /* мягкие градиентные акценты на ключевых тёмных блоках */
+  .hero{background:radial-gradient(120% 90% at 82% 8%, rgba(201,132,50,.10), transparent 60%), #0B1712}
+  .formula{background:radial-gradient(90% 140% at 15% 0%, rgba(201,132,50,.09), transparent 55%), #06110D}
+  .broker{background:radial-gradient(80% 130% at 85% 10%, rgba(201,132,50,.07), transparent 55%), #06110D}
+  .final{background:radial-gradient(90% 80% at 50% 0%, rgba(201,132,50,.08), transparent 60%)}
+  /* ключевая карточка тарифа — тонкое свечение */
+  .plan--main{box-shadow:0 0 0 1px var(--copper), 0 18px 50px -24px rgba(201,132,50,.5)}
+
+  /* микровзаимодействия — плавный подъём карточек на ховере */
+  .cause,.deliv-row,.scen-card,.step,.plan,.ex-card,.cmp,.team-card{
+    transition:transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, border-color .22s ease;
+  }
+  @media (hover:hover){
+    .scen-card:hover,.ex-card:hover,.cmp:hover{transform:translateY(-4px);box-shadow:0 16px 34px -20px rgba(11,23,18,.55)}
+    .plan:hover{transform:translateY(-4px);box-shadow:0 20px 44px -22px rgba(11,23,18,.5)}
+    .plan--main:hover{transform:translateY(-4px);box-shadow:0 0 0 1px var(--copper), 0 24px 60px -22px rgba(201,132,50,.6)}
+    .cause:hover h3,.step:hover h4{color:var(--copper-soft);transition:color .2s ease}
+    .broker-rules div:hover{background:rgba(201,132,50,.06)}
+    .faq summary:hover{color:var(--copper-soft)}
+    .chip{transition:border-color .2s ease,color .2s ease}
+    .deliv-row:hover .chip{border-color:#5E8570;color:#D7E3D8}
+  }
+  /* кнопки — живее на ховере */
+  .btn{box-shadow:0 8px 20px -12px rgba(201,132,50,.5)}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px -12px rgba(201,132,50,.6)}
+  .btn--ghost{box-shadow:none}
+  /* «подкрутка» чисел */
+  .count{font-variant-numeric:tabular-nums}
+
   /* ---------- появление при скролле ---------- */
   .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
   .rv.in{opacity:1;transform:none}
   @media (prefers-reduced-motion: reduce){
     .rv{opacity:1;transform:none;transition:none}
+    .btn:hover,.scen-card:hover,.ex-card:hover,.cmp:hover,.plan:hover,.plan--main:hover{transform:none}
     html{scroll-behavior:auto}
   }
 
@@ -397,7 +428,7 @@
           <a class="btn btn--ghost" href="#report">Что входит в отчёт</a>
         </div>
         <div class="hero-trust">
-          <span><b>15</b> рабочих дней</span>
+          <span><b class="count" data-to="15">15</b> рабочих дней</span>
           <span>Команда из федерального девелопмента</span>
           <span>Фиксированная стоимость</span>
         </div>
@@ -813,6 +844,27 @@
       });
     }, { threshold: 0.12 });
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+  })();
+
+  // «подкрутка» чисел при появлении
+  (function(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var els = document.querySelectorAll('.count[data-to]');
+    if (!els.length || !('IntersectionObserver' in window)) return;
+    var run = function(el){
+      var to = parseInt(el.getAttribute('data-to'), 10), t0 = null, dur = 900;
+      var step = function(ts){
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(e * to);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ run(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    els.forEach(function(el){ io.observe(el); });
   })();
 
   // форма → Web3Forms (заявка уходит в сервис и на почту; без своего бэкенда).
