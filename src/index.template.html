@@ -698,7 +698,7 @@
       </form>
       <div class="form-ok rv" id="formOk" role="status">
         <b>Заявка принята.</b>
-        <p>Сейчас откроется ваша почта с готовым письмом — нажмите «Отправить». Если письмо не открылось, напишите на <a href="mailto:K.bernatov@gmail.com" style="color:var(--copper-soft)">K.bernatov@gmail.com</a> или позвоните <a href="tel:+79124578359" style="color:var(--copper-soft)">+7 912 457-83-59</a>. Вердикт — в течение 48 часов.</p>
+        <p>Мы получили кадастровый номер и контакт — вернёмся с вердиктом в течение 48 часов. Если срочно — <a href="mailto:K.bernatov@gmail.com" style="color:var(--copper-soft)">K.bernatov@gmail.com</a> или <a href="tel:+79124578359" style="color:var(--copper-soft)">+7 912 457-83-59</a>.</p>
       </div>
       <p class="form-note rv">Не помните кадастровый номер — пришлите адрес участка. Диагностика бесплатна и ни к чему не обязывает. Если девелоперского потенциала нет — скажем прямо и не будем продавать вам полный анализ.</p>
     </div>
@@ -745,25 +745,42 @@
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
   })();
 
-  // форма (без серверной части: показывает подтверждение; подключите отправку в CRM или Телеграм-бот)
+  // форма → Web3Forms (заявка уходит в сервис и на почту; без своего бэкенда).
   (function(){
+    var WEB3FORMS_KEY = '{{WEB3FORMS_KEY}}';
     var form = document.getElementById('leadForm');
     var ok = document.getElementById('formOk');
+    var btn = form.querySelector('button[type="submit"]');
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
       var k = document.getElementById('kadastr');
       var c = document.getElementById('contact');
-      if (!k.value.trim() || !c.value.trim()) {
-        (!k.value.trim() ? k : c).focus();
-        return;
+      if (!k.value.trim() || !c.value.trim()) { (!k.value.trim() ? k : c).focus(); return; }
+      var payload = {
+        access_key: WEB3FORMS_KEY,
+        subject: 'Заявка (собственники): экспресс-диагностика участка',
+        from_name: 'Лендинг «Дороже» — собственники (index)',
+        'Кадастровый номер': k.value.trim(),
+        'Контакт': c.value.trim(),
+        'Версия сайта': 'index'
+      };
+      var done = function(){ form.style.display='none'; ok.style.display='block'; ok.classList.add('in'); ok.scrollIntoView({block:'nearest',behavior:'smooth'}); };
+      if (WEB3FORMS_KEY.indexOf('WEB3FORMS') !== -1) {
+        window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + encodeURIComponent(payload.subject) +
+          '&body=' + encodeURIComponent('Кадастр: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim());
+        done(); return;
       }
-      var subj = encodeURIComponent('Заявка: экспресс-диагностика участка');
-      var body = encodeURIComponent('Кадастровый номер: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim() + '\nИсточник: лендинг «Дороже»');
-      window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + subj + '&body=' + body;
-      form.style.display = 'none';
-      ok.style.display = 'block';
-      ok.classList.add('in');
-      ok.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      if (btn){ btn.disabled = true; btn.textContent = 'Отправляем…'; }
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST', headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+        body: JSON.stringify(payload)
+      }).then(function(r){ return r.json(); }).then(function(res){
+        if (res && res.success) { done(); } else { throw new Error('fail'); }
+      }).catch(function(){
+        if (btn){ btn.disabled = false; btn.textContent = 'Получить экспресс-вердикт за 48 часов'; }
+        window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + encodeURIComponent(payload.subject) +
+          '&body=' + encodeURIComponent('Кадастр: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim());
+      });
     });
   })();
 

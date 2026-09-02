@@ -463,7 +463,7 @@
       </form>
       <div class="form-ok rv" id="formOk" role="status">
         <b>Заявка принята.</b>
-        <p>Сейчас откроется ваша почта с готовым письмом — нажмите «Отправить». Если письмо не открылось, напишите на <a href="mailto:K.bernatov@gmail.com" style="color:var(--bronze)">K.bernatov@gmail.com</a> или позвоните <a href="tel:+79124578359" style="color:var(--bronze)">+7 912 457-83-59</a>. Результат — в течение 48 часов.</p>
+        <p>Мы получили кадастровый номер и контакт — вернёмся с результатом в течение 48 часов. Если срочно — <a href="mailto:K.bernatov@gmail.com" style="color:var(--bronze)">K.bernatov@gmail.com</a> или <a href="tel:+79124578359" style="color:var(--bronze)">+7 912 457-83-59</a>.</p>
       </div>
       <p class="form-note rv">Не помните кадастровый номер — укажите адрес участка. Предварительная оценка бесплатна и не накладывает обязательств. Если девелоперский потенциал отсутствует, мы сообщим об этом прямо.</p>
     </div>
@@ -510,23 +510,40 @@
   })();
 
   (function(){
+    var WEB3FORMS_KEY = '{{WEB3FORMS_KEY}}';
     var form = document.getElementById('leadForm');
     var ok = document.getElementById('formOk');
+    var btn = form.querySelector('button[type="submit"]');
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
       var k = document.getElementById('kadastr');
       var c = document.getElementById('contact');
-      if (!k.value.trim() || !c.value.trim()) {
-        (!k.value.trim() ? k : c).focus();
-        return;
+      if (!k.value.trim() || !c.value.trim()) { (!k.value.trim() ? k : c).focus(); return; }
+      var payload = {
+        access_key: WEB3FORMS_KEY,
+        subject: 'Заявка (собственники): предварительный анализ участка',
+        from_name: 'Лендинг «Дороже» — собственники (classic)',
+        'Кадастровый номер': k.value.trim(),
+        'Контакт': c.value.trim(),
+        'Версия сайта': 'classic'
+      };
+      var done = function(){ form.style.display='none'; ok.style.display='block'; ok.classList.add('in'); ok.scrollIntoView({block:'nearest',behavior:'smooth'}); };
+      if (WEB3FORMS_KEY.indexOf('WEB3FORMS') !== -1) {
+        window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + encodeURIComponent(payload.subject) +
+          '&body=' + encodeURIComponent('Кадастр: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim());
+        done(); return;
       }
-      var subj = encodeURIComponent('Заявка: предварительная оценка участка');
-      var body = encodeURIComponent('Кадастровый номер: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim() + '\nИсточник: лендинг «Дороже», консервативная версия');
-      window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + subj + '&body=' + body;
-      form.style.display = 'none';
-      ok.style.display = 'block';
-      ok.classList.add('in');
-      ok.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      if (btn){ btn.disabled = true; btn.textContent = 'Отправляем…'; }
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST', headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+        body: JSON.stringify(payload)
+      }).then(function(r){ return r.json(); }).then(function(res){
+        if (res && res.success) { done(); } else { throw new Error('fail'); }
+      }).catch(function(){
+        if (btn){ btn.disabled = false; btn.textContent = 'Получить предварительный вердикт'; }
+        window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + encodeURIComponent(payload.subject) +
+          '&body=' + encodeURIComponent('Кадастр: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim());
+      });
     });
   })();
 

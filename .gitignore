@@ -2,3 +2,5 @@
 CLAUDE.md
 .DS_Store
 __pycache__/
+outreach/
+.web3forms_key

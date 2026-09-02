@@ -247,6 +247,32 @@
   .c-d{font-size:14px;color:var(--mut-l)}
   .cmp--us .c-d{color:#C6D4C7}
 
+  /* ---------- пример методики ---------- */
+  .ex-plot{margin-bottom:20px}
+  .ex-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 20px;background:var(--bone-2);border-left:3px solid var(--copper)}
+  .ex-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:#8A5717;flex:none}
+  .ex-line{font-size:15.5px;color:var(--txt-l)}
+  .ex-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+  .ex-card{border:1px solid var(--line-l);background:#FBF8EF;padding:24px 22px 22px;display:flex;flex-direction:column}
+  .ex-code{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:#8A5717;margin-bottom:12px}
+  .ex-card h4{font-family:var(--disp);font-weight:400;font-size:19px;margin-bottom:10px;color:var(--txt-l)}
+  .ex-card p{font-size:14.5px;color:var(--mut-l)}
+  .ex-cap{margin-top:auto;padding-top:14px;font-family:var(--mono);font-size:11px;color:#8A5717;letter-spacing:.03em}
+  .ex-bars{display:flex;align-items:flex-end;gap:6px;height:96px;margin:16px 0 4px}
+  .ex-bars span{flex:1;height:var(--h);background:#CFC5AA;border-radius:2px 2px 0 0}
+  .ex-bars span[style*="--c:1"]{background:var(--copper)}
+  .ex-tbl{list-style:none;display:flex;flex-direction:column;gap:8px;margin:6px 0 4px}
+  .ex-tbl li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:#F4F0E5;font-size:14px;color:var(--txt-l)}
+  .ex-tbl li span{font-family:var(--mono);font-size:12.5px;color:var(--mut-l);flex:none}
+  .ex-tbl li.ex-win{background:var(--ink);color:#F6F2E5}
+  .ex-tbl li.ex-win span{color:var(--copper-soft)}
+  .ex-tbl li b{font-weight:500}
+  .ex-range{margin:18px 0 4px}
+  .ex-range-bar{position:relative;height:8px;border-radius:4px;background:linear-gradient(90deg,#CFC5AA,var(--copper))}
+  .ex-range-bar i{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;border:2px solid #8A5717}
+  .ex-range-bar i.ex-win-dot{width:16px;height:16px;margin:-8px 0 0 -8px;border-color:var(--copper);background:var(--copper)}
+  .ex-range-lbl{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--mut-l)}
+
   /* ---------- FAQ ---------- */
   .faq{max-width:780px}
   .faq details{border-bottom:1px solid var(--line-d)}
@@ -307,14 +333,14 @@
         linear-gradient(to bottom, transparent 70%, var(--ink) 100%);
     }
     .causes,.scen,.plans{grid-template-columns:1fr 1fr}
-    .steps{grid-template-columns:1fr 1fr}
+    .steps,.ex-steps{grid-template-columns:1fr 1fr}
     .deliv-row{grid-template-columns:110px 1fr;gap:18px}
     .deliv-row p{grid-column:2}
     .broker-in{grid-template-columns:1fr}
   }
   @media (max-width:640px){
     .nav-links{display:none}
-    .causes,.scen,.plans,.steps{grid-template-columns:1fr}
+    .causes,.scen,.plans,.steps,.ex-steps{grid-template-columns:1fr}
     .deliv-row{grid-template-columns:1fr;gap:12px;padding:32px 0}
     .deliv-row p{grid-column:1}
     .deliv-code{padding-top:0}
@@ -348,6 +374,7 @@
     <nav class="nav-links" aria-label="Разделы">
       <a href="#report">Что в отчёте</a>
       <a href="#method">Метод</a>
+      <a href="#example">Пример</a>
       <a href="#pricing">Стоимость</a>
       <a href="#faq">Вопросы</a>
     </nav>
@@ -632,6 +659,62 @@
     </div>
   </section>
 
+  <!-- ============ ПРИМЕР МЕТОДИКИ ============ -->
+  <section class="on-light" id="example">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="eyebrow">Как выглядит отчёт</p>
+        <h2>Фрагмент анализа — на условном участке</h2>
+        <p class="lead">Чтобы было предметно: так устроен разбор. Данные ниже — обезличенный образец методики на условном участке, не реальная сделка.</p>
+      </div>
+
+      <div class="ex-plot rv">
+        <div class="ex-meta">
+          <span class="ex-tag">УСЛОВНЫЙ УЧАСТОК</span>
+          <p class="ex-line">Областной центр · 1,2 га · многоэтажная застройка по ПЗЗ</p>
+        </div>
+      </div>
+
+      <div class="ex-steps rv">
+        <article class="ex-card">
+          <p class="ex-code">01 · КОТЁЛ КОНКУРЕНТОВ</p>
+          <h4>С чем сравнит покупатель</h4>
+          <p>8 строящихся ЖК в радиусе спроса. По каждому — класс, квартирография, цена м², темп продаж. Видно: комфорт-класс перенасыщен, свободна ниша «комфорт+» с малогабаритными форматами.</p>
+          <div class="ex-bars" aria-hidden="true">
+            <span style="--h:38%"></span><span style="--h:62%"></span><span style="--h:44%"></span>
+            <span style="--h:90%;--c:1"></span><span style="--h:55%"></span><span style="--h:71%"></span>
+            <span style="--h:48%"></span><span style="--h:33%"></span>
+          </div>
+          <p class="ex-cap">Плотность предложения по классам · оранжевым — недобор</p>
+        </article>
+
+        <article class="ex-card">
+          <p class="ex-code">02 · СЦЕНАРИИ ПРОДУКТА</p>
+          <h4>Три варианта — с экономикой</h4>
+          <ul class="ex-tbl">
+            <li><b>А · Комфорт «как у всех»</b><span>выручка — база</span></li>
+            <li class="ex-win"><b>Б · Комфорт+ под нишу</b><span>+11–14% к базе</span></li>
+            <li><b>В · Смешанный с коммерцией</b><span>+6% · выше риск</span></li>
+          </ul>
+          <p class="ex-cap">Сценарий Б: та же себестоимость, продукт под свободную нишу</p>
+        </article>
+
+        <article class="ex-card">
+          <p class="ex-code">03 · ЦЕНА СТАРТА</p>
+          <h4>Почём выходить</h4>
+          <p>Целевые цены по типам квартир относительно котла, прайс старта и логика повышения по мере готовности. Ориентир выручки проекта по выбранному сценарию.</p>
+          <div class="ex-range" aria-hidden="true">
+            <div class="ex-range-bar"><i style="left:22%"></i><i style="left:58%" class="ex-win-dot"></i><i style="left:86%"></i></div>
+            <div class="ex-range-lbl"><span>рынок «в лоб»</span><span>цель старта</span><span>потолок</span></div>
+          </div>
+          <p class="ex-cap">Коридор цены м² · точка старта из расчёта, а не «плюс маржа»</p>
+        </article>
+      </div>
+
+      <p class="scen-note rv">Полный отчёт — 30–40 страниц с проверяемой первичкой по каждому пункту. <b>Пример выше условен и приведён для понимания структуры;</b> цифры реального участка считаются по его данным.</p>
+    </div>
+  </section>
+
   <!-- ============ FAQ ============ -->
   <section id="faq">
     <div class="wrap">
@@ -685,7 +768,7 @@
       </form>
       <div class="form-ok rv" id="formOk" role="status">
         <b>Заявка принята.</b>
-        <p>Сейчас откроется ваша почта с готовым письмом — нажмите «Отправить». Если письмо не открылось, напишите на <a href="mailto:K.bernatov@gmail.com" style="color:var(--copper-soft)">K.bernatov@gmail.com</a> или позвоните <a href="tel:+79124578359" style="color:var(--copper-soft)">+7 912 457-83-59</a>. Вердикт — в течение 48 часов.</p>
+        <p>Мы получили кадастровый номер и контакт — вернёмся с вердиктом в течение 48 часов. Если срочно — <a href="mailto:K.bernatov@gmail.com" style="color:var(--copper-soft)">K.bernatov@gmail.com</a> или <a href="tel:+79124578359" style="color:var(--copper-soft)">+7 912 457-83-59</a>.</p>
       </div>
       <p class="form-note rv">Диагностика бесплатна и ни к чему не обязывает. Если участок не тянет ваш замысел — скажем прямо и покажем, что он тянет.</p>
     </div>
@@ -732,25 +815,45 @@
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
   })();
 
-  // форма (без серверной части: показывает подтверждение; подключите отправку в CRM или Телеграм-бот)
+  // форма → Web3Forms (заявка уходит в сервис и на почту; без своего бэкенда).
+  // Ключ подставляется при сборке из {{WEB3FORMS_KEY}}.
   (function(){
+    var WEB3FORMS_KEY = '{{WEB3FORMS_KEY}}';
     var form = document.getElementById('leadForm');
     var ok = document.getElementById('formOk');
+    var btn = form.querySelector('button[type="submit"]');
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
       var k = document.getElementById('kadastr');
       var c = document.getElementById('contact');
-      if (!k.value.trim() || !c.value.trim()) {
-        (!k.value.trim() ? k : c).focus();
-        return;
+      if (!k.value.trim() || !c.value.trim()) { (!k.value.trim() ? k : c).focus(); return; }
+      var payload = {
+        access_key: WEB3FORMS_KEY,
+        subject: 'Заявка (девелоперы): диагностика участка под проект',
+        from_name: 'Лендинг «Дороже» — девелоперы',
+        'Кадастровый номер': k.value.trim(),
+        'Контакт': c.value.trim(),
+        'Версия сайта': 'developers'
+      };
+      var done = function(){ form.style.display='none'; ok.style.display='block'; ok.classList.add('in'); ok.scrollIntoView({block:'nearest',behavior:'smooth'}); };
+      // Fallback на mailto, если ключ ещё не подставлен
+      if (WEB3FORMS_KEY.indexOf('WEB3FORMS') !== -1) {
+        window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + encodeURIComponent(payload.subject) +
+          '&body=' + encodeURIComponent('Кадастр: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim());
+        done(); return;
       }
-      var subj = encodeURIComponent('Заявка: диагностика участка под проект');
-      var body = encodeURIComponent('Кадастровый номер: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim() + '\nИсточник: лендинг «Дороже» — версия для девелоперов');
-      window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + subj + '&body=' + body;
-      form.style.display = 'none';
-      ok.style.display = 'block';
-      ok.classList.add('in');
-      ok.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      if (btn){ btn.disabled = true; btn.textContent = 'Отправляем…'; }
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST', headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+        body: JSON.stringify(payload)
+      }).then(function(r){ return r.json(); }).then(function(res){
+        if (res && res.success) { done(); }
+        else { throw new Error('fail'); }
+      }).catch(function(){
+        if (btn){ btn.disabled = false; btn.textContent = 'Получить экспресс-вердикт за 48 часов'; }
+        window.location.href = 'mailto:K.bernatov@gmail.com?subject=' + encodeURIComponent(payload.subject) +
+          '&body=' + encodeURIComponent('Кадастр: ' + k.value.trim() + '\nКонтакт: ' + c.value.trim());
+      });
     });
   })();
 
